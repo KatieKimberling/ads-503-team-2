@@ -1,0 +1,17 @@
+# Ignore R/RStudio files
+.Rhistory
+.RData
+.Rproj.user/
+*.Rproj
+
+# Ignore Python/Jupyter
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.env
+*.env
+*.DS_Store
+
+# OS and system files
+Thumbs.db
+.DS_Store
