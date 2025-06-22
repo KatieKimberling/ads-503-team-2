@@ -51,7 +51,7 @@ git clone https://github.com/KatieKimberling/ads-503-team-2.git
 3.  Run the project notebook:
 
 ```         
-Final Project Metabolic Syndrome.ipynb
+Metabolic Syndrome Final Project.ipynb
 ```
 
 ### Are YOU At Risk?
