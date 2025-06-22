@@ -48,7 +48,9 @@ git init
 git clone https://github.com/KatieKimberling/ads-503-team-2.git
 ```
 
-3.  Run the project notebook:
+3.  Navigate to the Project Deliverables folder, then
+   
+4.  Run the project notebook:
 
 ```         
 Metabolic Syndrome Final Project.ipynb
