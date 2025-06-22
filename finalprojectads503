@@ -1,0 +1,59 @@
+#KNN model... adding 4th model to project
+ Define predictor variable names
+predictors <- c("BMI", "Age", "LogBloodGlucose", "HDL", "WaistCirc", "LogTriglycerides")
+
+# Scale training and testing data
+preproc <- preProcess(train_data[, predictors], method = c("center", "scale"))
+train_scaled <- predict(preproc, train_data)
+test_scaled <- predict(preproc, test_data)
+
+# Train KNN with cross-validation
+set.seed(123)
+ctrl <- trainControl(method = "cv", number = 5, 
+                     classProbs = TRUE, 
+                     summaryFunction = twoClassSummary)
+
+knn_grid <- expand.grid(k = seq(3, 15, by = 2))
+
+knn_model <- train(MetabolicSyndrome ~ BMI + Age + LogBloodGlucose + HDL + WaistCirc + LogTriglycerides,
+                   data = train_scaled,
+                   method = "knn",
+                   trControl = ctrl,
+                   tuneGrid = knn_grid,
+                   metric = "ROC")
+
+
+
+depending on results, we can proceed with predictions
+
+knn_preds <- predict(knn_model, newdata = test_scaled)
+confusionMatrix(knn_preds, test_scaled$MetabolicSyndrome, positive = "Yes")
+
+# ROC Curve
+knn_probs <- predict(knn_model, newdata = test_scaled, type = "prob")
+knn_roc <- roc(response = test_scaled$MetabolicSyndrome,
+               predictor = knn_probs$Yes)
+
+plot(knn_roc, main = "ROC Curve - KNN")
+auc(knn_roc)
+
+
+#also adding GMB model as 5th model:
+
+# Train GBM model with tuning
+set.seed(123)
+gbm_grid <- expand.grid(interaction.depth = c(1, 3, 5),
+                        n.trees = c(100, 150, 200),
+                        shrinkage = c(0.05, 0.1),
+                        n.minobsinnode = 10)
+
+gbm_model <- train(MetabolicSyndrome ~ BMI + Age + LogBloodGlucose + HDL + WaistCirc + LogTriglycerides,
+                   data = train_data,
+                   method = "gbm",
+                   trControl = ctrl,
+                   tuneGrid = gbm_grid,
+                   verbose = FALSE,
+                   metric = "ROC")
+
+
+
